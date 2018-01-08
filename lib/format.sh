@@ -1,5 +1,5 @@
-if shellm-ndef __FORMAT_SH; then
-shellm-define __FORMAT_SH "
+if shellm-ndef; then
+shellm-define "
   format"
 
 ## \brief Format your output with style and color.
