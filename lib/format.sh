@@ -1,7 +1,3 @@
-if shellm-ndef; then
-shellm-define "
-  format"
-
 ## \brief Format your output with style and color.
 
 ## \example format onBlack intenseGreen faint bold; echo 'SUCCESS!'; format reset
@@ -287,5 +283,3 @@ else # 16 colors
   }
 
 fi
-
-fi  #  __FORMAT_SH
