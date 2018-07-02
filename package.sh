@@ -1,4 +1,4 @@
-BINS="bin/shellm-format"  #:bin/other-script
+# BINS="bin/shellm-format"  #:bin/other-script
 LIBS="lib/format.sh"
 DEPS=gitlab.com/shellm/shellman  #:user2/repo2
 BASH_COMPLETIONS="cmp/format.completion.bash"
