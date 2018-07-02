@@ -3,7 +3,7 @@ set -e
 
 PREFIX="${1:-/usr/local}"
 APP_ROOT="$(dirname "$(readlink -f "$0")")"
-NAMESPACE="shellm-org"
+NAMESPACE="shellm"
 PACKAGE="format"
 INSTALL_PATH="packages/${NAMESPACE}/${PACKAGE}"
 
