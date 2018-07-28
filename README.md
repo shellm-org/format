@@ -31,7 +31,7 @@ As a library:
 # with basher's include
 include shellm/format lib/format.sh
 # with shellm's include
-shellm-include shellm/format lib/format.sh
+shellm-source shellm/format lib/format.sh
 
 # both are equivalent
 format bold black underline onIntenseBlue newLine -- INFO
