@@ -59,6 +59,23 @@
 ## Also underline, faint and blink will be ignored.
 ## Other available styles may or may not be interpreted by your terminal.
 
+
+__format_print() {
+  if [ "$F" != "${ESC}" ]; then
+    [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${F}m"
+  fi
+
+  if [ $# -ne 0 ]; then
+    echo -n${E} "$@"
+    echo -n${E}
+    [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${ESC}0m"
+  fi
+
+  if [ ${NEWLINE} -eq 1 ]; then
+    echo ''
+  fi
+}
+
 ## \fn format [OPTIONS] [ARGS]
 ## \brief Format the output with style and color
 ## \param OPTIONS Letters or complete names of style/colors.
@@ -148,29 +165,12 @@ if [ "${TERM}" = linux ]; then # 8 colors
       shift
     done
 
-    _format_print() {
-      if [ "$F" != "${ESC}" ]; then
-        [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${F}m"
-      fi
-
-      if [ $# -ne 0 ]; then
-        echo -n${E} "$@"
-        echo -n${E}
-        [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${ESC}0m"
-      fi
-
-      if [ ${NEWLINE} -eq 1 ]; then
-        echo ''
-      fi
-    }
-
     if [ ${REDIRECT} -eq 1 ]; then
-      _format_print "$@" >&2
+      __format_print "$@" >&2
     else
-      _format_print "$@"
+      __format_print "$@"
     fi
 
-    unset -f _format_print
   }
 
 else # 16 colors
@@ -257,29 +257,12 @@ else # 16 colors
       shift
     done
 
-    _format_print() {
-      if [ "$F" != "${ESC}" ]; then
-        [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${F}m"
-      fi
-
-      if [ $# -ne 0 ]; then
-        echo -n${E} "$@"
-        echo -n${E}
-        [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${ESC}0m"
-      fi
-
-      if [ ${NEWLINE} -eq 1 ]; then
-        echo ''
-      fi
-    }
-
     if [ ${REDIRECT} -eq 1 ]; then
-      _format_print "$@" >&2
+      __format_print "$@" >&2
     else
-      _format_print "$@"
+      __format_print "$@"
     fi
 
-    unset -f _format_print
   }
 
 fi
