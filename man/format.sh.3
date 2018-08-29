@@ -1,0 +1,73 @@
+.if n.ad l
+.nh
+
+.TH format.sh 1 "2018-08-29" "Shellman 0.2.2" "User Commands"
+
+.SH "NAME"
+format.sh \- Format your output with style and color.
+
+.SH "DESCRIPTION"
+Available arguments to the 'format' function:
+
+    Foreground       |  Foreground (intense)
+    _________________|________________________________
+                     |
+    d, default       |
+    k, black         |  ik, intenseBlack
+    r, red           |  ir, intenseRed
+    g, green         |  iG, intenseGreen
+    y, yellow        |  iy, intenseYellow
+    b, blue          |  ib, intenseBlue
+    m, magenta       |  im, intenseMagenta
+    c, cyan          |  ic, intenseCyan
+    w, white         |  iw, intenseWhite
+
+    Background       |  Background (intense)
+    _________________|________________________________
+                     |
+    od, onDefault    |
+    ok, onBlack      |  oik, onIntenseBlack
+    or, onRed        |  oir, onIntenseRed
+    og, onGreen      |  oiG, onIntenseGreen
+    oy, onYellow     |  oiy, onIntenseYellow
+    ob, onBlue       |  oib, onIntenseBlue
+    om, onMagenta    |  oim, onIntenseMagenta
+    oc, onCyan       |  oic, onIntenseCyan
+    ow, onWhite      |  oiw, onIntenseWhite
+
+    Style            |  Reset style
+    _________________|________________________________
+                     |
+                     |  ra, RA, reset, resetAll
+    B, bold          |  rb, RB, resetBold
+    F, faint         |  rf, RF, resetFaint
+    I, italic        |  ri, RI, resetItalic
+    U, underlin      |  ru, RU, resetUnderline
+    K, blink         |  rk, RK, resetBlink
+    R, reverse       |  rr, RR, resetReverse
+    H, hidden        |  rh, RH, resetHidden
+    S, strike        |  rs, RS, resetStrike
+
+    Extra            |  Explanation
+    _________________|________________________________
+                     |
+    nl, newLine      |  Add a newline at the end.
+    dr, dryRun       |  Don't interpret ansi codes.
+    er, redirectErr  |  Print on standard error.
+    --               |  Stop interpretation of arguments as options.
+
+.SH "STANDARD OUTPUT"
+The formatted string.
+
+.SH "EXAMPLES"
+.IP "\fBformat onBlack intenseGreen faint bold; echo 'SUCCESS!'; format reset
+Black background, intense-green foreground, fainted and bold.\fR" 4
+
+.IP "\fBformat B k U oib nl INFO
+Bold, black foreground, underline, intense-blue background and new line.\fR" 4
+
+.SH "NOTES"
+On linux terminals (tty), high intensity colors will
+be replaced by their 8-colors equivalent.
+Also underline, faint and blink will be ignored.
+Other available styles may or may not be interpreted by your terminal.
