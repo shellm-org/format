@@ -1,5 +1,3 @@
-.PHONY: rmdoc wiki
-
 BINDIR := bin
 LIBDIR := lib
 MANDIR := man
@@ -26,6 +24,18 @@ $(MANDIR)/%.1: $(BINDIR)/%
 $(MANDIR)/%.sh.3: $(LIBDIR)/%.sh
 	shellman -tmanpage $< -o $@
 
+$(WIKIDIR)/home.md: templates/wiki_home.md $(BINDIR) $(LIBDIR)
+	shellman -tpath:$< -o $@ \
+	  --context project=format \
+	            scripts="$(SCRIPTS)" \
+	            libraries="$(LIBRARIES)"
+
+$(WIKIDIR)/_sidebar.md: templates/wiki_sidebar.md $(BINDIR) $(LIBDIR)
+	shellman -tpath:$< -o $@ \
+	  --context project=format \
+	            scripts="$(SCRIPTS)" \
+	            libraries="$(LIBRARIES)"
+
 $(WIKIDIR)/%.md: $(BINDIR)/%
 	shellman -twikipage $< -o $@
 
@@ -34,17 +44,6 @@ $(WIKIDIR)/%.sh.md: $(LIBDIR)/%.sh
 
 man: $(MANPAGES)
 
-wiki: $(WIKIPAGES)
-	shellman -tpath:templates/wiki_home.md -o wiki/home.md \
-	  --context project=format \
-		          scripts="$(SCRIPTS)" \
-		          libraries="$(LIBRARIES)"
-	shellman -tpath:templates/wiki_sidebar.md -o wiki/_sidebar.md \
-	  --context project=format \
-	            scripts="$(SCRIPTS)" \
-	            libraries="$(LIBRARIES)"
+wiki: $(WIKIPAGES) $(WIKIDIR)/home.md $(WIKIDIR)/_sidebar.md
 
 doc: man wiki
-
-rmdoc:
-	rm man/* wiki/Scripts/* wiki/Library/*
