@@ -17,7 +17,6 @@ cache:
     - basher install bats-core/bats-core
     - mkdir "$BASHER_ROOT/cellar/packages/shellm" || true
     - ln -s "$(pwd)" "$BASHER_ROOT/cellar/packages/shellm/format"
-    - basher _link-bins shellm/format
     - basher _deps shellm/format
 
 .quality_template: &quality_definition
