@@ -1,0 +1,14 @@
+{
+  "namespace": "shellm",
+  "project": "format",
+  "title": "Style and Colors",
+  "subtitle": "Format your messages with style and colors.",
+  "shelldemo_used": true,
+  "do_not_escape_lines_that_start_with": ["    "],
+  "readme_sections": [
+    "summary",
+    "demo",
+    "installation",
+    "usage"
+  ]
+}

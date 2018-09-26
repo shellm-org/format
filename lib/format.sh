@@ -1,58 +1,61 @@
 ## \brief Format your output with style and color.
 
-## \example format onBlack intenseGreen faint bold; echo 'SUCCESS!'; format reset
-## Black background, intense-green foreground, fainted and bold.
-## \example format B k U oib nl INFO
-## Bold, black foreground, underline, intense-blue background and new line.
+## \example Black background, intense-green foreground, fainted and bold:
+## \example-code bash
+##   format onBlack intenseGreen faint bold; echo 'SUCCESS!'; format reset
+## \example Bold, black foreground, underline, intense-blue background and new line:
+## \example-code bash
+##   format B k U oib nl INFO
 
 ## \desc Available arguments to the 'format' function:
 ##
-##     Foreground       |  Foreground (intense)
-##     _________________|________________________________
-##                      |
-##     d, default       |
-##     k, black         |  ik, intenseBlack
-##     r, red           |  ir, intenseRed
-##     g, green         |  iG, intenseGreen
-##     y, yellow        |  iy, intenseYellow
-##     b, blue          |  ib, intenseBlue
-##     m, magenta       |  im, intenseMagenta
-##     c, cyan          |  ic, intenseCyan
-##     w, white         |  iw, intenseWhite
+##     Foreground       │  Foreground (intense)
+##     _________________│________________________________
+##                      │
+##     d, default       │
+##     k, black         │  ik, intenseBlack
+##     r, red           │  ir, intenseRed
+##     g, green         │  iG, intenseGreen
+##     y, yellow        │  iy, intenseYellow
+##     b, blue          │  ib, intenseBlue
+##     m, magenta       │  im, intenseMagenta
+##     c, cyan          │  ic, intenseCyan
+##     w, white         │  iw, intenseWhite
 ##
-##     Background       |  Background (intense)
-##     _________________|________________________________
-##                      |
-##     od, onDefault    |
-##     ok, onBlack      |  oik, onIntenseBlack
-##     or, onRed        |  oir, onIntenseRed
-##     og, onGreen      |  oiG, onIntenseGreen
-##     oy, onYellow     |  oiy, onIntenseYellow
-##     ob, onBlue       |  oib, onIntenseBlue
-##     om, onMagenta    |  oim, onIntenseMagenta
-##     oc, onCyan       |  oic, onIntenseCyan
-##     ow, onWhite      |  oiw, onIntenseWhite
+##     Background       │  Background (intense)
+##     _________________│________________________________
+##                      │
+##     od, onDefault    │
+##     ok, onBlack      │  oik, onIntenseBlack
+##     or, onRed        │  oir, onIntenseRed
+##     og, onGreen      │  oiG, onIntenseGreen
+##     oy, onYellow     │  oiy, onIntenseYellow
+##     ob, onBlue       │  oib, onIntenseBlue
+##     om, onMagenta    │  oim, onIntenseMagenta
+##     oc, onCyan       │  oic, onIntenseCyan
+##     ow, onWhite      │  oiw, onIntenseWhite
 ##
-##     Style            |  Reset style
-##     _________________|________________________________
-##                      |
-##                      |  ra, RA, reset, resetAll
-##     B, bold          |  rb, RB, resetBold
-##     F, faint         |  rf, RF, resetFaint
-##     I, italic        |  ri, RI, resetItalic
-##     U, underlin      |  ru, RU, resetUnderline
-##     K, blink         |  rk, RK, resetBlink
-##     R, reverse       |  rr, RR, resetReverse
-##     H, hidden        |  rh, RH, resetHidden
-##     S, strike        |  rs, RS, resetStrike
+##     Style            │  Reset style
+##     _________________│________________________________
+##                      │
+##                      │  ra, RA, reset, resetAll
+##     B, bold          │  rb, RB, resetBold
+##     F, faint         │  rf, RF, resetFaint
+##     I, italic        │  ri, RI, resetItalic
+##     U, underlin      │  ru, RU, resetUnderline
+##     K, blink         │  rk, RK, resetBlink
+##     R, reverse       │  rr, RR, resetReverse
+##     H, hidden        │  rh, RH, resetHidden
+##     S, strike        │  rs, RS, resetStrike
 ##
-##     Extra            |  Explanation
-##     _________________|________________________________
-##                      |
-##     nl, newLine      |  Add a newline at the end.
-##     dr, dryRun       |  Don't interpret ansi codes.
-##     er, redirectErr  |  Print on standard error.
-##     --               |  Stop interpretation of arguments as options.
+##     Extra            │  Explanation
+##     _________________│________________________________
+##                      │
+##     nl, newline      │  Add a newline at the end.
+##     dr, dryrun       │  Don't interpret ansi codes.
+##     er, stderr       │  Print on standard error.
+##     nr, noreset      │  Don't reset previous sequences.
+##     --               │  Stop interpretation of arguments as options.
 
 ## \note On linux terminals (tty), high intensity colors will
 ## be replaced by their 8-colors equivalent.
@@ -61,34 +64,55 @@
 
 
 __format_print() {
-  if [ "$F" != "${ESC}" ]; then
-    [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${F}m"
+  local F_empty=0
+
+  if [ -z "$F" ]; then
+    F_empty=1
+  else
+    # shellcheck disable=SC2086
+    if [ ${NORESET} -eq 1 ]; then
+      F="${F#;}"
+    fi
+    F="${ESC}${F}m"
+  fi
+
+  if [ ${F_empty} -eq 0 ]; then
+    # shellcheck disable=SC2086
+    [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${F}"
   fi
 
   if [ $# -ne 0 ]; then
+    # shellcheck disable=SC2086
     echo -n${E} "$@"
+    # shellcheck disable=SC2086
     echo -n${E}
-    [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${ESC}0m"
+
+    if [ ${F_empty} -eq 0 ]; then
+      # shellcheck disable=SC2086
+      [ ! -n "${SHELLM_NO_FORMAT}" ] && echo -n${E} "${ESC}0m"
+    fi
   fi
 
+  # shellcheck disable=SC2086
   if [ ${NEWLINE} -eq 1 ]; then
     echo ''
   fi
 }
 
-## \fn format [OPTIONS] [ARGS]
-## \brief Format the output with style and color
-## \param OPTIONS Letters or complete names of style/colors.
-## \param ARGS Text to print.
-## \stdout The formatted string.
+## \function format [OPTIONS] [ARGS]
+## \function-brief Format the output with style and color
+## \function-argument OPTIONS Letters or complete names of style/colors.
+## \function-argument ARGS Text to print.
+## \function-stdout The formatted string.
 if [ "${TERM}" = linux ]; then # 8 colors
 
   format() {
     local NEWLINE=0
     local REDIRECT=0
+    local NORESET=0
     local E='e'
     local ESC='\033['
-    local F="${ESC}"
+    local F=""
     while [ $# -ne 0 ]; do
       case "$1" in
         # Foreground
@@ -155,9 +179,10 @@ if [ "${TERM}" = linux ]; then # 8 colors
         rs|RS|resetStrike) F=$F\;20 ;;
 
         # Extra
-        nl|newLine) NEWLINE=1 ;;
-        dr|dryRun) E='' ;;
-        er|redirectErr) REDIRECT=1 ;;
+        nl|newline) NEWLINE=1 ;;
+        dr|dryrun) E='' ;;
+        er|stderr) REDIRECT=1 ;;
+        nr|noreset) NORESET=1 ;;
 
         --) shift; break ;;
         *) break ;;
@@ -178,9 +203,10 @@ else # 16 colors
   format() {
     local NEWLINE=0
     local REDIRECT=0
+    local NORESET=0
     local E='e'
     local ESC='\033['
-    local F="${ESC}"
+    local F=""
     while [ $# -ne 0 ]; do
       case "$1" in
         # Foreground
@@ -247,9 +273,10 @@ else # 16 colors
         rs|RS|resetStrike) F=$F\;20 ;;
 
         # Extra
-        nl|newLine) NEWLINE=1 ;;
-        dr|dryRun) E='' ;;
-        er|redirectErr) REDIRECT=1 ;;
+        nl|newline) NEWLINE=1 ;;
+        dr|dryrun) E='' ;;
+        er|stderr) REDIRECT=1 ;;
+        nr|noreset) NORESET=1 ;;
 
         --) shift; break ;;
         *) break ;;

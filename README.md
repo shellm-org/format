@@ -1,48 +1,65 @@
-# format
-Format your output with style and color.
+<p align="center">
+  <img src="https://gl.githack.com/shellm/format/raw/master/logo.png">
+</p>
 
-- Authors: https://gitlab.com/shellm/format/AUTHORS.md
-- Changelog: https://gitlab.com/shellm/format/CHANGELOG.md
-- Contributing: https://gitlab.com/shellm/format/CONTRIBUTING.md
-- Documentation: https://gitlab.com/shellm/format/wiki
-- License: ISC - https://gitlab.com/shellm/format/LICENSE
+<h1 align="center">Style and Colors</h1>
+
+<p align="center">Format your messages with style and colors.</p>
+
+<p align="center">
+  <a href="https://gitlab.com/shellm/format/commits/master">
+    <img alt="pipeline status" src="https://gitlab.com/shellm/format/badges/master/pipeline.svg" />
+  </a>
+  <!--<a href="https://gitlab.com/shellm/format/commits/master">
+    <img alt="coverage report" src="https://gitlab.com/shellm/format/badges/master/coverage.svg" />
+  </a>-->
+  <a href="https://gitter.im/shellm/format">
+    <img alt="gitter chat" src="https://badges.gitter.im/shellm/format.svg" />
+  </a>
+</p>
+
+`format` is a function designed to help you add style and colors
+in your terminal messages.
+
+<h2 align="center">Demo</h2>
+<p align="center"><img src="https://gl.githack.com/shellm/format/raw/master/demo/demo.svg"></p>
+<p align="center"><em>Demo generated with <a href="https://github.com/nbedos/termtosvg">termtosvg</a>.</p>
 
 ## Installation
-Installation with [basher](https://github.com/basherpm/basher):
-```bash
-basher install shellm/format
-```
+Installation is done with [basher](https://github.com/basherpm/basher):
 
-Installation from source:
 ```bash
-git clone https://gitlab.com/shellm/format
-cd format
-sudo ./install.sh
+basher install gitlab.com/shellm/format
 ```
 
 ## Usage
-Command-line:
-```
-man format.sh
-```
+`format` can be used several ways:
 
-As a library:
-```bash
-# with basher's include
-include shellm/format lib/format.sh
-# with shellm's include
-shellm-source shellm/format lib/format.sh
+1. by directly giving the string to print:
 
-# both are equivalent
-format bold black underline onIntenseBlue newLine -- INFO
-format B b U oib nl -- INFO
+  ```bash
+  format bold blue onWhite -- " info "
+  ```
 
-# dry-run to see what would be written
-format g oy dryRun  # \033[;32;43m
+2. by first printing the style and colors, then multiple strings:
 
-# redirect to STDERR
-format bold white onRed redirectErr CRITICAL
+  ```bash
+  format bold red
+  echo "error: this is not supposed to do that,"
+  echo "please turn off your computer."
+  format reset
+  ```
 
-# with subprocesses
-echo "$(format bold black onIntenseYellow) WARNING $(format resetAll) message" >&2
-```
+3. with subprocesses, to use different styles and colors in the same string:
+
+  ```bash
+  echo "$(format strike)easy$(format bold) very easy$(format reset) to use!"
+  ```
+
+4. with `printf`:
+
+  ```bash
+  printf "%s warning %s your computer will leave the room in 3...2...1...\n" \
+    "$(format bold black onIntenseYellow)" \
+    "$(format reset)"
+  ```

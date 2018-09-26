@@ -1,0 +1,32 @@
+# demo: charinterval=0
+cdrepo shellm/format/demo
+export PROFILE_PROMPT='${debian_chroot:+($debian_chroot)}\[\033[00;34m\]format demo \[\033[00;35m\]\$ \[\033[00m\]'
+c() { clear; }; export -f c
+e() { exit; }; export -f e
+c
+
+termtosvg -g 100x20 demo.svg -t window_frame  # demo: charinterval=0.06; sleep 2
+# Load format in the current shell  # demo: sleep 0.8
+shellm-source shellm/format  # demo: sleep 0.8
+c  # demo: sleep 0.1
+# Directly give the string to print  # demo: sleep 0.8
+format bold blue newline onWhite -- " info "  # demo: sleep 1.5
+# Print first the style and colors, then multiple strings:  # demo: sleep 0.8
+format bold red; \
+echo "error: this is not supposed to do that,"; \
+echo "please turn off your computer."; \
+format reset  # demo: sleep 1.5
+# Use different styles and colors in the same string:  # demo: sleep 0.8
+echo "$(format reverse)easy$(format bold), very easy$(format reset) to use!"  # demo: sleep 1.5
+# You can cumulate previous styles with the 'noreset' option:  # demo: sleep 0.8
+echo "$(format reverse)easy$(format noreset bold), very easy$(format reset) to use!"  # demo: sleep 1.5
+# Finally, an example with printf:  # demo: sleep 0.8
+printf "%s warning %s your computer will leave the room in 3...2...1...\n" \
+  "$(format bold black onIntenseYellow)" \
+  "$(format reset)"  # demo: sleep 2
+c  # demo: sleep 0.1
+# You can see all the formatting options with man format.sh:  # demo: sleep 0.8
+man format.sh  # demo: sleep 1;
+# demo: for i in {1..20}; do echo >&3; sleep 0.1; done; sleep 1
+# demo: for i in {1..20}; do echo >&3; sleep 0.1; done; sleep 1
+qe  # demo: sleep 1

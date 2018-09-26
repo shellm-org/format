@@ -13,7 +13,7 @@ complete -W "
 
   B bold F faint I italic U underline K blink R reverse H hidden S strike
 
-  nl newLine dr dryRun er redirectErr
+  nl newline dr dryrun er stderr nr noreset
 
   ra RA reset resetAll
   rb RB resetBold rf RF resetFaint ri RI resetItalic ru RU resetUnderline
