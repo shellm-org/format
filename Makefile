@@ -1,28 +1,47 @@
 .PHONY := help
 .DEFAULT_GOAL := help
 
+# Directory structure
 BINDIR := bin
 LIBDIR := lib
 MANDIR := man
 WIKIDIR := wiki
 
-LIBRARIES := $(sort $(shell cd $(LIBDIR) && ls))
+# List scripts and libraries
+ifneq ($(wildcard $(BINDIR)/),)
+WIKI_DEPS += $(BINDIR)
+SCRIPTS := $(sort $(shell find $(BINDIR) -type f -executable 2>/dev/null | sed "s/^$(BINDIR)\///"))
+endif
+ifneq ($(wildcard $(LIBDIR)/),)
+WIKI_DEPS += $(LIBDIR)
+LIBRARIES := $(sort $(shell find $(LIBDIR) -name '*.sh' 2>/dev/null | sed "s/^$(LIBDIR)\///"))
+endif
 
+# Deduce manpages and wikipages names from scripts and libraries
 MANPAGES := $(addprefix $(MANDIR)/,$(addsuffix .1,$(SCRIPTS)) $(addsuffix .3,$(LIBRARIES)))
 WIKIPAGES := $(addprefix $(WIKIDIR)/,$(addsuffix .md,$(SCRIPTS)) $(addsuffix .md,$(LIBRARIES)))
 
+
 all: check-quality test ## Run quality and unit tests.
+
+$(MANDIR)/%.1: $(BINDIR)/%
+	shellman -tmanpage $< -o $@
 
 $(MANDIR)/%.sh.3: $(LIBDIR)/%.sh
 	shellman -tmanpage $< -o $@
 
-$(WIKIDIR)/home.md: templates/wiki_home.md $(LIBDIR)
+$(WIKIDIR)/home.md: templates/wiki_home.md $(WIKI_DEPS)
 	shellman -tpath:$< -o $@ \
-	  --context libraries="$(LIBRARIES)"
+	  --context scripts="$(SCRIPTS)" \
+	            libraries="$(LIBRARIES)"
 
-$(WIKIDIR)/_sidebar.md: templates/wiki_sidebar.md $(LIBDIR)
+$(WIKIDIR)/_sidebar.md: templates/wiki_sidebar.md $(WIKI_DEPS)
 	shellman -tpath:$< -o $@ \
-	  --context libraries="$(LIBRARIES)"
+	  --context scripts="$(SCRIPTS)" \
+	            libraries="$(LIBRARIES)"
+
+$(WIKIDIR)/%.md: $(BINDIR)/%
+	shellman -twikipage $< -o $@
 
 $(WIKIDIR)/%.sh.md: $(LIBDIR)/%.sh
 	shellman -twikipage $< -o $@
@@ -41,9 +60,6 @@ check-style: ## Run the style tests.
 
 check-documentation: ## Run the documentation tests.
 	bats tests/quality/test_shellman.bats
-
-check-compatibility: ## Run the compatibility tests.
-	bats tests/quality/test_compatibility.bats
 
 check-quality: ## Run the quality tests.
 	bats tests/quality/*.bats

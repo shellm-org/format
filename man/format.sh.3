@@ -1,13 +1,14 @@
 .if n.ad l
 .nh
 
-.TH format.sh 1 "2018-09-26" "shellman 0.3.4" "User Commands"
+.TH format.sh 1 "2018-09-27" "shellman 0.3.4" "User Commands"
 
 .SH "NAME"
 format.sh \- Format your output with style and color.
 
 .SH "DESCRIPTION"
 Available arguments to the 'format' function:
+
     Foreground       │  Foreground (intense)
     _________________│________________________________
                      │
@@ -20,6 +21,7 @@ Available arguments to the 'format' function:
     m, magenta       │  im, intenseMagenta
     c, cyan          │  ic, intenseCyan
     w, white         │  iw, intenseWhite
+
     Background       │  Background (intense)
     _________________│________________________________
                      │
@@ -32,6 +34,7 @@ Available arguments to the 'format' function:
     om, onMagenta    │  oim, onIntenseMagenta
     oc, onCyan       │  oic, onIntenseCyan
     ow, onWhite      │  oiw, onIntenseWhite
+
     Style            │  Reset style
     _________________│________________________________
                      │
@@ -44,6 +47,7 @@ Available arguments to the 'format' function:
     R, reverse       │  rr, RR, resetReverse
     H, hidden        │  rh, RH, resetHidden
     S, strike        │  rs, RS, resetStrike
+
     Extra            │  Explanation
     _________________│________________________________
                      │
@@ -64,11 +68,15 @@ Format the output with style and color
 
 
 .SH "EXAMPLES"
-.IP "\fBformat onBlack intenseGreen faint bold; echo 'SUCCESS!'; format reset
-Black background, intense-green foreground, fainted and bold.\fR" 4
+.IP "\fBBlack background, intense-green foreground, fainted and bold:\fR" 4
 
-.IP "\fBformat B k U oib nl INFO
-Bold, black foreground, underline, intense-blue background and new line.\fR" 4
+  format onBlack intenseGreen faint bold; echo 'SUCCESS!'; format reset
+
+
+.IP "\fBBold, black foreground, underline, intense-blue background and new line:\fR" 4
+
+  format B k U oib nl INFO
+
 
 .SH "NOTES"
 On linux terminals (tty), high intensity colors will
