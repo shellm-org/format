@@ -2,10 +2,6 @@ stages:
   - quality
   - test
 
-cache:
-  paths:
-    - .basher
-
 .job_template: &job_definition
   variables:
     BASHER_ROOT: $CI_PROJECT_DIR/.basher
