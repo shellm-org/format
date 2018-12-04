@@ -6,8 +6,8 @@ stages:
   variables:
     BASHER_ROOT: $CI_PROJECT_DIR/.basher
   before_script:
-    - apk add --no-cache make git
-    - git clone --depth=1 https://github.com/basherpm/basher "$BASHER_ROOT" || true
+    - apk add --no-cache make git file
+    - git clone --depth=1 https://github.com/basherpm/basher "$BASHER_ROOT"
     - export PATH="$BASHER_ROOT/bin:$PATH"
     - eval "$(basher init -)"
     - basher install bats-core/bats-core
