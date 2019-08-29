@@ -117,7 +117,7 @@ if [ "${TERM}" = linux ]; then # 8 colors
       case "$1" in
         # Foreground
         d|default) F=$F\;39 ;;
-        h|black) F=$F\;30 ;;
+        k|black) F=$F\;30 ;;
         r|red) F=$F\;31 ;;
         g|green) F=$F\;32 ;;
         y|yellow) F=$F\;33 ;;

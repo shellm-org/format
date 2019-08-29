@@ -1,4 +1,4 @@
-# Welcome to the {{ project }} wiki!
+# Welcome to the {{ project_name }} wiki!
 
 {% if scripts %}
 ## Scripts

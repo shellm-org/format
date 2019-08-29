@@ -1,2 +1,2 @@
 source $(shellm-core-path)
-shellm-source shellm/format
+shellm source shellm/format

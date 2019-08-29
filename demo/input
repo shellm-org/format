@@ -7,7 +7,7 @@ c
 
 termtosvg -g 100x20 demo.svg -t window_frame  # demo: charinterval=0.06; sleep 2
 # Load format in the current shell  # demo: sleep 0.8
-shellm-source shellm/format  # demo: sleep 0.8
+shellm source shellm/format  # demo: sleep 0.8
 c  # demo: sleep 0.1
 # Directly give the string to print  # demo: sleep 0.8
 format bold blue newline onWhite -- " info "  # demo: sleep 1.5

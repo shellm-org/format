@@ -1,24 +1,24 @@
-<p align="center">
-  <img src="https://gl.githack.com/{{ namespace }}/{{ project }}/raw/master/logo.png">
+{% if logo %}<p align="center">
+  <img src="https://gl.githack.com/{{ repository_namespace }}/{{ repository_name }}/raw/master/{{ logo }}">
 </p>
 
-<h1 align="center">{{ title }}</h1>
+<h1 align="center">{{ project_description }}</h1>{% else %}<h1 align="center">{{ project_description }}</h1>
 
-<p align="center">{{ subtitle }}</p>
+<p align="center">{{ project_description }}</p>{% endif %}
 
-<p align="center">
-  <a href="https://gitlab.com/{{ namespace }}/{{ project }}/commits/master">
-    <img alt="pipeline status" src="https://gitlab.com/{{ namespace }}/{{ project }}/badges/master/pipeline.svg" />
+<p align="center">{# following lines are specific to gitlab, do not use repository_provider #}
+  <a href="https://gitlab.com/{{ repository_namespace }}/{{ repository_name }}/pipelines">
+    <img alt="pipeline status" src="https://gitlab.com/{{ repository_namespace }}/{{ repository_name }}/badges/master/pipeline.svg" />
   </a>
-  <!--<a href="https://gitlab.com/{{ namespace }}/{{ project }}/commits/master">
-    <img alt="coverage report" src="https://gitlab.com/{{ namespace }}/{{ project }}/badges/master/coverage.svg" />
-  </a>-->
-  <a href="https://gitter.im/{{ namespace }}/{{ project }}">
-    <img alt="gitter chat" src="https://badges.gitter.im/{{ namespace }}/{{ project }}.svg" />
+  <a href="https://gitlab.com/{{ repository_namespace }}/{{ repository_name }}/pipelines">
+    <img alt="coverage report" src="https://gitlab.com/{{ repository_namespace }}/{{ repository_name }}/badges/master/coverage.svg" />
+  </a>
+  <a href="https://gitter.im/{{ repository_namespace }}/{{ repository_name }}">
+    <img alt="gitter chat" src="https://badges.gitter.im/{{ repository_namespace }}/{{ repository_name }}.svg" />
   </a>
 </p>
 
 {% for section in readme_sections %}
-  {% include "readme_" + section + ".md" with context %}
+{% include "readme_" + section + ".md" with context %}
 
 {% endfor %}
